@@ -1,3 +1,4 @@
+import pytest
 import unittest
 
 
@@ -29,8 +30,18 @@ Frontend-разработчик с нуля - 20 месяцев"""
     def test_nothing(self):
         self.fail("shouldn't happen")
 
-    def test_py_f(self):
-        assert first_function() == 'No'
+
+@pytest.mark.parametrize(
+    "month, day, expected", [
+        ("декабрь", 5, "Стрелец"),
+        ("сентябрь", 3, "Дева"),
+        ("апрель", 5, "Овен"),
+        ("февраль", 27, "Рыбы"),
+        ("август", 11, "Весы")  # not ok
+    ]
+)
+def test_py_f(month, day, expected):
+    assert fourth_function(month, day) == expected
 
 
 def first_function():
@@ -152,6 +163,32 @@ def third_function():
     res.append(f'Самый короткий курс(ы): {courses_min} - {min} месяца(ев)')
     res.append(f'Самый длинный курс(ы): {courses_max} - {max} месяца(ев)')
     return '\n'.join(res)
+
+
+def fourth_function(month, day):
+    zodiac = ['Водолей', 'Рыбы', 'Овен', 'Телец',
+              'Близнецы', 'Рак', 'Лев', 'Дева',
+              'Весы', 'Скорпион', 'Стрелец', 'Козерог']
+    begin_day = [20, 19, 21, 20, 21, 22, 23, 23, 23, 24, 23, 22]
+    months = {
+        'январь': 1,
+        'февраль': 2,
+        'март': 3,
+        'апрель': 4,
+        'май': 5,
+        'июнь': 6,
+        'июль': 7,
+        'август': 8,
+        'сентябрь': 9,
+        'октябрь': 10,
+        'ноябрь': 11,
+        'декабрь': 12
+    }
+
+    if day > begin_day[months[month]-1]:
+        return zodiac[months[month]-1]
+    else:
+        return zodiac[months[month]-2]
 
 
 if __name__ == '__main__':
